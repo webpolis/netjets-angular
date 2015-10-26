@@ -19,7 +19,9 @@ import com.teamhub.managers.node.NodeQueryPlanner;
 import com.teamhub.managers.site.SiteManager;
 import com.teamhub.models.node.Node;
 import com.teamhub.models.node.Question;
+import com.teamhub.models.site.Container;
 import com.teamhub.models.site.Network;
+import com.teamhub.models.site.Site;
 
 @Service
 @AutowireStatic
@@ -40,7 +42,7 @@ public class NetjetsApiManager {
 	SessionFactoryWrapper sessionFactoryWrapper;
 
 	@Transactional
-	public PaginatedList getQuestionsBySpace(final Network network,
+	public PaginatedList getQuestionsBySpace(final Container container,
 			final String space, final String sort, final Integer page,
 			final Integer pageSize) {
 		final PaginatedList list = (PaginatedList) this.sessionFactoryWrapper
@@ -53,9 +55,7 @@ public class NetjetsApiManager {
 								.namedSort(sort);
 
 						p.inContainer(NetjetsApiManager.this.siteManager
-								.getSpaceByName(space,
-										NetjetsApiManager.this.requestInfo
-										.getSite()));
+								.getSpaceByName(space, (Site) container));
 
 						final List<Question> questions = p.execute();
 
@@ -66,7 +66,7 @@ public class NetjetsApiManager {
 								pageSize, p.getCount(), Node.Sorts.values(),
 								additionalParams);
 					}
-				}, network);
+				}, (Network) container.getParent());
 
 		return list;
 	}

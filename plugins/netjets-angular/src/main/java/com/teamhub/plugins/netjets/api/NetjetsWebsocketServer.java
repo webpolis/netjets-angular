@@ -14,8 +14,10 @@ import org.springframework.stereotype.Controller;
 
 import com.teamhub.controllers.utils.PaginatedList;
 import com.teamhub.managers.site.ServerManager;
+import com.teamhub.models.site.Container;
 import com.teamhub.models.site.Network;
 import com.teamhub.plugins.netjets.managers.NetjetsApiManager;
+import com.teamhub.util.NotFoundException;
 
 @Controller
 public class NetjetsWebsocketServer extends WebSocketServer {
@@ -52,18 +54,23 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 			if (jsonMsg != null) {
 				if (jsonMsg.get("action") != null) {
 					if (jsonMsg.get("action").equals("listBySpace")) {
-						final Network network = this.serverManager
-								.getNetwork(6);
-						final String space = jsonMsg.getString("space");
-						final String sort = jsonMsg.getString("sort");
-						final int page = jsonMsg.getInt("page");
-						final int pageSize = jsonMsg.getInt("pageSize");
-
-						final PaginatedList list = NetjetsWebsocketServer.apiManager
-								.getQuestionsBySpace(network, space, sort,
-										page, pageSize);
-
-						ret = list.toString();
+						final Long siteId = jsonMsg.getLong("site");
+						final Container container = this.serverManager.getContainer(siteId);
+						
+						if(container != null){
+							final String space = jsonMsg.getString("space");
+							final String sort = jsonMsg.getString("sort");
+							final int page = jsonMsg.getInt("page");
+							final int pageSize = jsonMsg.getInt("pageSize");
+	
+							final PaginatedList list = NetjetsWebsocketServer.apiManager
+									.getQuestionsBySpace(container, space, sort,
+											page, pageSize);
+	
+							ret = list.toString();
+						}else{
+							throw new NotFoundException();
+						}
 					}
 				}
 			}
