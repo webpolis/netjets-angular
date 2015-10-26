@@ -1,0 +1,13 @@
+<teamhub-plugin key="dzone.dzone-netjets-angular"
+	name="Netjets-Angular" plugins-version="2">
+	<plugin-info>
+		<description>Websockets bridge between AH -> Angular</description>
+		<version>1.0-snapshot</version>
+		<vendor name="Dzone, Inc." url="http://www.dzone.com" />
+	</plugin-info>
+
+	<resource type="annotatedPackages" name="annotatedPackages" location="com.teamhub.plugins.netjets" />
+	
+	<bean key="netjetsApiManager" class="com.teamhub.plugins.netjets.managers.NetjetsApiManager" scope="network" depends-on="runInNetworkContext"/>
+	
+</teamhub-plugin>

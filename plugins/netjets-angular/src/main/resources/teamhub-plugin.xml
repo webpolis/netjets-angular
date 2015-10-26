@@ -1,0 +1,13 @@
+<teamhub-plugin key="@plugin.groupId@.@plugin.artifactId@"
+	name="@plugin.name@" plugins-version="2">
+	<plugin-info>
+		<description>@plugin.description@</description>
+		<version>@plugin.version@</version>
+		<vendor name="@plugin.organization.name@" url="@plugin.organization.url@" />
+	</plugin-info>
+
+	<resource type="annotatedPackages" name="annotatedPackages" location="com.teamhub.plugins.netjets" />
+	
+	<bean key="netjetsApiManager" class="com.teamhub.plugins.netjets.managers.NetjetsApiManager" scope="network" depends-on="runInNetworkContext"/>
+	
+</teamhub-plugin>
