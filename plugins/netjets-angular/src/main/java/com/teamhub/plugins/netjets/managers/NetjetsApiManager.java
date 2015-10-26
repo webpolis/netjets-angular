@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.teamhub.controllers.utils.PaginatedList;
 import com.teamhub.infrastructure.hibernate.SessionFactoryWrapper;
 import com.teamhub.infrastructure.spring.RequestInfo;
+import com.teamhub.infrastructure.utils.BeanUtils;
 import com.teamhub.infrastructure.utils.reflection.AutowireStatic;
 import com.teamhub.managers.generic.DirectQueryManager;
 import com.teamhub.managers.node.NodeManager;
@@ -22,6 +23,7 @@ import com.teamhub.models.node.Question;
 import com.teamhub.models.site.Container;
 import com.teamhub.models.site.Network;
 import com.teamhub.models.site.Site;
+import com.teamhub.plugins.netjets.api.utils.NetjetsApiJsonEncoder;
 
 @Service
 @AutowireStatic
@@ -40,12 +42,15 @@ public class NetjetsApiManager {
 
 	@Autowired
 	SessionFactoryWrapper sessionFactoryWrapper;
+		
+	@Autowired
+	NetjetsApiJsonEncoder jsonEncoder;
 
 	@Transactional
-	public PaginatedList getQuestionsBySpace(final Container container,
+	public String getQuestionsBySpace(final Container container,
 			final String space, final String sort, final Integer page,
 			final Integer pageSize) {
-		final PaginatedList list = (PaginatedList) this.sessionFactoryWrapper
+		final String json = (String) this.sessionFactoryWrapper
 				.runOnNetwork(new Callable() {
 					@Override
 					public Object call() throws Exception {
@@ -62,12 +67,14 @@ public class NetjetsApiManager {
 						final Map<String, Object> additionalParams = new HashMap<String, Object>();
 						additionalParams.put("customPageSize", true);
 
-						return new PaginatedList(questions, sort, page,
+						final PaginatedList list = new PaginatedList(questions, sort, page,
 								pageSize, p.getCount(), Node.Sorts.values(),
 								additionalParams);
+						
+						return jsonEncoder.encodeQuestionsList((List) BeanUtils.deproxySimple(list.getList()));
 					}
 				}, (Network) container.getParent());
 
-		return list;
+		return json;
 	}
 }
