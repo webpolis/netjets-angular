@@ -30,9 +30,16 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 
 	@Autowired
 	NetjetsApiResponse apiResponse;
+	
+	private static NetjetsWebsocketServer instance = null;
 
 	public NetjetsWebsocketServer() {
 		super(new InetSocketAddress(NetjetsWebsocketServer.PORT));
+		instance = this;
+	}
+	
+	public static final NetjetsWebsocketServer getInstance(){
+		return instance;
 	}
 
 	@PostConstruct
