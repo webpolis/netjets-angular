@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -21,6 +22,8 @@ import com.teamhub.util.NotFoundException;
 public class NetjetsWebsocketServer extends WebSocketServer {
 
 	public static final int PORT = 8888;
+	
+	private final Logger logger = Logger.getLogger(NetjetsWebsocketServer.class);
 
 	@Autowired
 	ServerManager serverManager;
@@ -35,6 +38,7 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 	@PostConstruct
 	public void init() {
 		this.start();
+		logger.debug("Netjets Websocket API listening on port " + NetjetsWebsocketServer.PORT);
 	}
 
 	@Override
