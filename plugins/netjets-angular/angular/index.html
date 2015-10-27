@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="lib/pure/build/pure-min.css">
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="lib/pure/build/grids-responsive-old-ie-min.css">
+<![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="lib/pure/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="lib/angular-websocket/angular-websocket.min.js"></script>
+    <script src="src/app.js"></script>
+    <script src="src/services/questions.js"></script>
+    <script src="src/directives/questions.js"></script>
+</head>
+
+<body ng-app="netjets">
+    <div class="pure-g">
+        <div class="pure-u-1">
+            <questions space="'Public'" page="1" page-size="10"></questions>
+        </div>
+    </div>
+</body>
+
+</html>

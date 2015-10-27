@@ -1,0 +1,25 @@
+{
+  "name": "angular",
+  "homepage": "https://github.com/dzone/netjets",
+  "authors": [
+    "Nicolas Iglesias <nicolasi@dzone.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-websocket": "~1.0.14",
+    "pure": "purecss#~0.6.0",
+    "angular-sanitize": "~1.4.7"
+  }
+}
