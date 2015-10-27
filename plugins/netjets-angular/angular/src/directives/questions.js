@@ -25,9 +25,7 @@ angular.module('netjets.directives', ['netjets.services']).directive('questions'
                 var data = angular.fromJson(msg.data);
 
                 if (data.update) {
-                    $timeout(function() {
-                        questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort);
-                    }, 1000);
+                    $timeout(update, 1000);
                 } else if (angular.isArray(data.list)) {
                     $scope.questions = data.list;
                     delete data.list;
@@ -38,12 +36,12 @@ angular.module('netjets.directives', ['netjets.services']).directive('questions'
             // watch pagination
             $scope.$watchGroup(['space', 'page', 'pageSize', 'sort'], function(n, o) {
                 if (!angular.equals(n, o)) {
-                    questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort);
+                    update();
                 }
             });
 
             // init list
-            questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort);
+            update();
         }]
     };
 }]);
