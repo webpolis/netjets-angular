@@ -1,4 +1,4 @@
-package com.teamhub.plugins.netjets.api.models;
+package com.teamhub.plugins.netjets.api.utils;
 
 import java.util.concurrent.Callable;
 
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.teamhub.infrastructure.hibernate.SessionFactoryWrapper;
 import com.teamhub.models.site.Container;
 import com.teamhub.models.site.Network;
-import com.teamhub.plugins.netjets.api.utils.NetjetsApiJsonUtils;
 import com.teamhub.plugins.netjets.managers.NetjetsApiManager;
 
 @Service

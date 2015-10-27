@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 
 import com.teamhub.managers.site.ServerManager;
 import com.teamhub.models.site.Container;
-import com.teamhub.plugins.netjets.api.models.NetjetsApiResponse;
+import com.teamhub.plugins.netjets.api.utils.NetjetsApiResponse;
 import com.teamhub.util.NotFoundException;
 
 @Controller
