@@ -3,7 +3,6 @@ package com.teamhub.plugins.netjets.managers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,10 @@ import com.teamhub.managers.node.NodeManager;
 import com.teamhub.managers.node.NodeQueryPlanner;
 import com.teamhub.managers.site.SiteManager;
 import com.teamhub.models.node.Node;
+import com.teamhub.models.node.Node.Visibility;
 import com.teamhub.models.node.Question;
 import com.teamhub.models.site.Container;
-import com.teamhub.models.site.Network;
 import com.teamhub.models.site.Site;
-import com.teamhub.plugins.netjets.api.utils.NetjetsApiJsonUtils;
 
 @Service
 @AutowireStatic
@@ -39,12 +37,12 @@ public class NetjetsApiManager {
 			final String space, final String sort, final Integer page,
 			final Integer pageSize) {
 		final NodeQueryPlanner<Question> p = NetjetsApiManager.this.nodeManager
-				.getQueryPlanner(Question.class)
-				.pageSize(pageSize).pageNumber(page)
+				.getQueryPlanner(Question.class).pageSize(pageSize)
+				.pageNumber(page).withVisibility(Visibility.full)
 				.namedSort(sort);
 
-		p.inContainer(NetjetsApiManager.this.siteManager
-				.getSpaceByName(space, (Site) container));
+		p.inContainer(NetjetsApiManager.this.siteManager.getSpaceByName(space,
+				(Site) container));
 
 		final List<Question> questions = p.execute();
 
@@ -52,9 +50,8 @@ public class NetjetsApiManager {
 		additionalParams.put("customPageSize", true);
 
 		final PaginatedList list = new PaginatedList(questions, sort, page,
-				pageSize, p.getCount(), Node.Sorts.values(),
-				additionalParams);
-		
+				pageSize, p.getCount(), Node.Sorts.values(), additionalParams);
+
 		return (List<Question>) BeanUtils.deproxySimple(list.getList());
 	}
 }

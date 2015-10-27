@@ -1,13 +1,9 @@
 package com.teamhub.plugins.netjets.api;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -16,14 +12,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.teamhub.controllers.utils.PaginatedList;
-import com.teamhub.infrastructure.utils.BeanUtils;
 import com.teamhub.managers.site.ServerManager;
 import com.teamhub.models.site.Container;
-import com.teamhub.models.site.Network;
 import com.teamhub.plugins.netjets.api.models.NetjetsApiResponse;
-import com.teamhub.plugins.netjets.api.utils.NetjetsApiJsonUtils;
-import com.teamhub.plugins.netjets.managers.NetjetsApiManager;
 import com.teamhub.util.NotFoundException;
 
 @Controller
@@ -33,7 +24,7 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 
 	@Autowired
 	ServerManager serverManager;
-	
+
 	@Autowired
 	NetjetsApiResponse apiResponse;
 
@@ -61,11 +52,12 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 			if (jsonMsg != null) {
 				if (jsonMsg.get("action") != null) {
 					final Long siteId = jsonMsg.getLong("site");
-					final Container container = this.serverManager.getContainer(siteId);
-					
-					if(container != null){
+					final Container container = this.serverManager
+							.getContainer(siteId);
+
+					if (container != null) {
 						ret = this.apiResponse.process(jsonMsg, container);
-					}else{
+					} else {
 						throw new NotFoundException();
 					}
 				}
