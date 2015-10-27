@@ -1,6 +1,4 @@
 angular.module('netjets.directives', ['netjets.services']).directive('questions', ['$rootScope', 'questionsSvc', function($rootScope, questionsSvc) {
-    var isUpdateEventSubscribed = false;
-
     return {
         restrict: 'E',
         transclude: true,
