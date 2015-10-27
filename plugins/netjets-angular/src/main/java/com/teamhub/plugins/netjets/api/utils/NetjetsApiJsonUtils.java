@@ -9,13 +9,15 @@ import java.util.Map;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.teamhub.controllers.utils.PaginatedList;
+import com.teamhub.infrastructure.utils.BeanUtils;
 import com.teamhub.models.node.Question;
+import com.teamhub.models.user.User;
 
-@Component
-public class NetjetsApiJsonEncoder {
+@Service
+public class NetjetsApiJsonUtils {
 
 	public String encodeQuestionsList(final List<Question> list){
 		final List<Map<String, Object>> questions = new ArrayList<Map<String,Object>>();
@@ -28,11 +30,13 @@ public class NetjetsApiJsonEncoder {
 				qMap.put("title", question.getTitle());
 				qMap.put("plug", question.getPlug());
 				
-				final Map<String, Object> author = new HashMap<String, Object>();
-				author.put("id", question.getAuthor().getId());
-				author.put("username", question.getAuthor().getUsername());
+				final Map<String, Object> authorMap = new HashMap<String, Object>();
+				final User author = (User) BeanUtils.deproxyAsObject(question.getAuthor());
 				
-				qMap.put("author", author);
+				authorMap.put("id", author.getId());
+				authorMap.put("username", author.getUsername());
+				
+				qMap.put("author", authorMap);
 				qMap.put("creationDate", question.getCreationDate());
 				qMap.put("lastActivityDate", question.getLastActivity());
 				qMap.put("body", question.asHTML());

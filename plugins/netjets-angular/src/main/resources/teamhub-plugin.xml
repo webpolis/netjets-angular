@@ -8,6 +8,7 @@
 
 	<resource type="annotatedPackages" name="annotatedPackages" location="com.teamhub.plugins.netjets" />
 	
-	<bean key="netjetsApiManager" class="com.teamhub.plugins.netjets.managers.NetjetsApiManager" scope="network" />
+	<bean key="netjetsApiManager" class="com.teamhub.plugins.netjets.managers.NetjetsApiManager" />
+	<bean key="netjetsApiJsonUtils" class="com.teamhub.plugins.netjets.api.utils.NetjetsApiJsonUtils" />
 	
 </teamhub-plugin>

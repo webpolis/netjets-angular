@@ -21,7 +21,8 @@ import com.teamhub.infrastructure.utils.BeanUtils;
 import com.teamhub.managers.site.ServerManager;
 import com.teamhub.models.site.Container;
 import com.teamhub.models.site.Network;
-import com.teamhub.plugins.netjets.api.utils.NetjetsApiJsonEncoder;
+import com.teamhub.plugins.netjets.api.models.NetjetsApiResponse;
+import com.teamhub.plugins.netjets.api.utils.NetjetsApiJsonUtils;
 import com.teamhub.plugins.netjets.managers.NetjetsApiManager;
 import com.teamhub.util.NotFoundException;
 
@@ -31,10 +32,10 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 	public static final int PORT = 8888;
 
 	@Autowired
-	static NetjetsApiManager apiManager;
-
-	@Autowired
 	ServerManager serverManager;
+	
+	@Autowired
+	NetjetsApiResponse apiResponse;
 
 	public NetjetsWebsocketServer() {
 		super(new InetSocketAddress(NetjetsWebsocketServer.PORT));
@@ -63,16 +64,7 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 					final Container container = this.serverManager.getContainer(siteId);
 					
 					if(container != null){
-						if (jsonMsg.get("action").equals("listBySpace")) {
-							final String space = jsonMsg.getString("space");
-							final String sort = jsonMsg.getString("sort");
-							final int page = jsonMsg.getInt("page");
-							final int pageSize = jsonMsg.getInt("pageSize");
-	
-							ret = NetjetsWebsocketServer.apiManager
-									.getQuestionsBySpace(container, space, sort,
-											page, pageSize);
-						}
+						ret = this.apiResponse.process(jsonMsg, container);
 					}else{
 						throw new NotFoundException();
 					}
