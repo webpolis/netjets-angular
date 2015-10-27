@@ -25,7 +25,7 @@ angular.module('netjets.directives', ['netjets.services']).directive('questions'
             }, 2000);
 
             // watch pagination
-            $scope.$watchGroup(['page', 'pageSize', 'sort'], function(n, o) {
+            $scope.$watchGroup(['space', 'page', 'pageSize', 'sort'], function(n, o) {
                 if (!angular.equals(n, o)) {
                     questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort).then(update);
                 }
