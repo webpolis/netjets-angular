@@ -10,7 +10,7 @@ angular.module('netjets.directives', ['netjets.services']).directive('questions'
             sort: '='
         },
         templateUrl: 'src/directives/templates/questions.html',
-        controller: ['$scope', 'questionsSvc', function($scope, questionsSvc) {
+        controller: ['$scope', '$interval', 'questionsSvc', function($scope, $interval, questionsSvc) {
             $scope.questions = [];
             $scope.pagination = null;
 
@@ -20,7 +20,9 @@ angular.module('netjets.directives', ['netjets.services']).directive('questions'
                 $scope.pagination = ret;
             };
 
-            questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort).then(update);
+            $interval(function(){
+                questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort).then(update);
+            }, 2000);
 
             // watch pagination
             $scope.$watchGroup(['page', 'pageSize', 'sort'], function(n, o) {
