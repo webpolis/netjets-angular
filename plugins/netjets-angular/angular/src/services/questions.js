@@ -7,17 +7,17 @@ angular.module('netjets.services', ['ngWebSocket']).provider('questionsSvc', fun
         _this.socket = $websocket(_this.wsEndpoint);
 
         return {
-            listBySpace: function(space, page, pageSize) {
+            listBySpace: function(space, page, pageSize, sort) {
                 var def = $q.defer();
 
                 _this.socket.onMessage(function(ret) {
-                    def.resolve(JSON.parse(ret.data));
+                    def.resolve(angular.fromJson(ret.data));
                 });
 
                 _this.socket.send({
                     action: 'listBySpace',
                     space: space,
-                    sort: 'active',
+                    sort: sort,
                     page: page,
                     pageSize: pageSize,
                     site: _this.container

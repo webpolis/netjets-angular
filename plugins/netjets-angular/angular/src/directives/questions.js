@@ -6,22 +6,26 @@ angular.module('netjets.directives', ['netjets.services']).directive('questions'
         scope: {
             space: '=',
             page: '=',
-            pageSize: '='
+            pageSize: '=',
+            sort: '='
         },
         templateUrl: 'src/directives/templates/questions.html',
         controller: ['$scope', 'questionsSvc', function($scope, questionsSvc) {
             $scope.questions = [];
+            $scope.pagination = null;
 
-            var update = function(questions) {
-                $scope.questions = questions;
+            var update = function(ret) {
+                $scope.questions = ret.list;
+                delete ret.list;
+                $scope.pagination = ret;
             };
 
-            questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize).then(update);
+            questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort).then(update);
 
             // watch pagination
-            $scope.$watchGroup(['page', 'pageSize'], function(n, o) {
+            $scope.$watchGroup(['page', 'pageSize', 'sort'], function(n, o) {
                 if (!angular.equals(n, o)) {
-                    questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize).then(update);
+                    questionsSvc.listBySpace($scope.space, $scope.page, $scope.pageSize, $scope.sort).then(update);
                 }
             });
         }]

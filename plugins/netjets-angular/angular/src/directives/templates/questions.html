@@ -1,11 +1,12 @@
-<div class="netjets-question">
-    <div ng-repeat="question in questions track by $id(question)">
+<div class="netjets-questions">
+    <div ng-repeat="question in questions track by $id(question)" class="netjets-question">
         <h4 class="question-title">
             {{question.title}}
         </h4>
         <div ng-bind-html="question.body" class="question-body"></div>
     </div>
     <div class="netjets-pagination">
-        <input type="number" ng-model="page" />
+    	<p>Total: {{pagination.totalCount}} - Page size: {{pageSize}}</p>
+        <input placeholder="Page" type="number" ng-model="page" />
     </div>
 </div>

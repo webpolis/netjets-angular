@@ -38,7 +38,7 @@ public class NetjetsWebsocketServer extends WebSocketServer {
 	@PostConstruct
 	public void init() {
 		this.start();
-		logger.debug("Netjets Websocket API listening on port " + NetjetsWebsocketServer.PORT);
+		logger.info("Netjets Websocket API listening on port " + NetjetsWebsocketServer.PORT);
 	}
 
 	@Override
