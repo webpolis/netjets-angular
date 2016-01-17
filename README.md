@@ -1,4 +1,3 @@
-# netjets
 ## Apache configuration
 
 Add the following to the virtual host configuration in Apache server:
